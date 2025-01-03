@@ -1,0 +1,1 @@
+yq e '.version' config.yaml
