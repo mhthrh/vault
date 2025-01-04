@@ -11,7 +11,7 @@ jobs:
 
       - name: copy files
         run: |
-          mkdir /app
+          sudo mkdir /app
           cp * /app
 
       - name: install pre-requirements
