@@ -12,7 +12,7 @@ jobs:
       - name: copy files
         run: |
           sudo mkdir /app
-          cp * /app
+          sudo cp * /app
 
       - name: install pre-requirements
         run: |
