@@ -10,7 +10,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: copy files
-        run: cp * /app
+        run: |
+          mkdir /app
+          cp * /app
 
       - name: install pre-requirements
         run: |
