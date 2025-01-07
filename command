@@ -19,9 +19,6 @@ export VAULT_TOKEN='hvs.xwtvWc6eNIXiyT3eo4O5qJa9'
     vault kv delete path
 
 
-export VAULT_ADDR='http://127.0.0.1:8200'
-export VAULT_TOKEN='hvs.xwtvWc6eNIXiyT3eo4O5qJa9'
-
 1- insert path in secret engine.
     vault secrets enable -path=kv/my-new-path kv
 2- now we can assign the ky value to that path.
