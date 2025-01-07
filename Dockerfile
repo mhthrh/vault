@@ -4,7 +4,7 @@ COPY app/install.sh .
 COPY app/secrets.yaml .
 COPY app/config.hcl /etc/vault.d/vault-config.hcl
 
-ENV BUILD_ENV='PROD'
+ENV BUILD_ENV='DEV'
 ENV VAULT_ADDR='http://127.0.0.1:8200'
 
 EXPOSE 8200
@@ -18,6 +18,6 @@ RUN apk add --no-cache curl bash && \
 
 
 CMD ["sh" , "./install.sh"]
-RUN vault secrets enable -path=kv/my-new-path kv
+#RUN vault secrets enable -path=kv/my-new-path kv
 
-CMD [" yq e '.secrets | to_entries[] | .key + '/' + (.value | to_entries[] | ' ' + (.key + '=' + .value))' app/secrets.yaml | xargs -L 1 vault kv put secret/data/"]
+#CMD [" yq e '.secrets | to_entries[] | .key + '/' + (.value | to_entries[] | ' ' + (.key + '=' + .value))' app/secrets.yaml | xargs -L 1 vault kv put secret/data/"]
