@@ -1,0 +1,19 @@
+[
+  {
+    "path": "/secret/data/Postgres",
+    "value": {
+      "Host": "localhost",
+      "Port": 5432,
+      "UserName": "username",
+      "Password": "password"
+    }
+  },
+  {
+  "path": "/secret/data/metaData",
+    "value": {
+      "AppName": "ApplicationName",
+      "Version": "v1.0.1",
+      "expireDate": "2025-12-30"
+    }
+  }
+]
