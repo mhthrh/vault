@@ -23,7 +23,6 @@ func init() {
 		log.Fatalln("vault address and/or token required")
 	}
 	ctx = context.Background()
-	token = "hvs.djQbHO20pNmZd1EiuN1BklBh"
 }
 func main() {
 	log.Println("Start application.")

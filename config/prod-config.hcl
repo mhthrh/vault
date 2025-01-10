@@ -16,3 +16,13 @@ audit "file" {
 api_addr = "http://127.0.0.1:8200"
 
 ui=true
+
+
+# Default Lease Configurations
+default_lease_ttl = "1h"
+max_lease_ttl     = "24h"
+
+# Performance Tuning
+disable_mlock = true
+log_level     = "info"
+

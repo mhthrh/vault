@@ -10,9 +10,10 @@ else
 fi
 
 if [ "$BUILD_ENV" = "PROD" ]; then
-    vault server -config=/etc/vault.d/vault-config.hcl
+    vault server -config=/app/config/prod-config.hcl
   else
-    vault server --dev
-    vault secrets enable -path=muKv/secrets kv
+    vault server  -config=/app/config/dev-config.hcl
 fi
 
+./token.sh
+/app/vaultInitializer

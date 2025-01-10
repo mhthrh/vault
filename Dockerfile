@@ -1,23 +1,43 @@
-FROM vault:1.13.3
+FROM ubuntu:latest
+ENV GO_VERSION=1.22.0
+ENV PATH=/usr/local/go/bin:$PATH
+ENV BUILD_ENV='PROD'
+ENV VAULT_ADDR='http://127.0.0.1:8200'
+ENV VAULT_API_ADDR='http://127.0.0.1:8200'
+ENV VAULT_TOKEN='~!root@token!~'
+ENV VAULT_VERSION=1.15.3
+ENV VAULT_DEV_LISTENER="tcp://0.0.0.0:8200"
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    tar \
+    unzip \
+    gnupg \
+    && wget -q https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz \
+    && rm go${GO_VERSION}.linux-amd64.tar.gz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip \
+    && unzip vault_${VAULT_VERSION}_linux_amd64.zip -d /usr/local/bin/ \
+    && rm vault_${VAULT_VERSION}_linux_amd64.zip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR app
 COPY config/install.sh .
-COPY config/secrets.yaml .
-COPY config/config.hcl /etc/vault.d/vault-config.hcl
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . /app/
+RUN go build -o vaultInitializer cmd/main.go
 
-ENV BUILD_ENV='DEV'
-ENV VAULT_ADDR='http://127.0.0.1:8200'
+EXPOSE 8200 8201
 
-EXPOSE 8200
-EXPOSE 8201
-
-RUN chmod +x ./install.sh
-
-RUN apk add --no-cache curl bash && \
-    curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq && \
-    chmod +x /usr/bin/yq
+RUN chmod +x /app/config/*.sh
 
 
-CMD ["sh" , "./install.sh"]
-#RUN vault secrets enable -path=kv/my-new-path kv
+CMD ["/app/config/install.sh"]
+#CMD ["/app/config/token.sh"]
+#CMD ["./vaultInitializer"]
 
-#CMD [" yq e '.secrets | to_entries[] | .key + '/' + (.value | to_entries[] | ' ' + (.key + '=' + .value))' config/secrets.yaml | xargs -L 1 vault kv put secret/data/"]
