@@ -1,6 +1,6 @@
 [
   {
-    "path": "/secret/data/Postgres",
+    "path": "/sec/data/Postgres",
     "value": {
       "Host": "localhost",
       "Port": 5432,
@@ -9,7 +9,7 @@
     }
   },
   {
-  "path": "/secret/data/metaData",
+  "path": "/sec/data/metaData",
     "value": {
       "AppName": "ApplicationName",
       "Version": "v1.0.1",

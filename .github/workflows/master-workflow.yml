@@ -14,13 +14,6 @@ jobs:
           sudo mkdir /app
           sudo cp * /app
 
-      - name: install pre-requirements
-        run: |
-          sudo apt update
-          sudo apt install snapd
-          sudo snap install yq
-      - name: run yp command
-        run: yq e '.secrets | to_entries[] | .key + "/" + (.value | to_entries[] | " " + (.key + "=" + .value))' ./config/secrets.yaml | xargs -L 1 vault kv put secret/data/
 
       - name: Build Docker Image
         run: |
