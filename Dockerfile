@@ -1,14 +1,16 @@
 FROM ubuntu:latest
+
 ENV GO_VERSION=1.22.0
 ENV PATH=/usr/local/go/bin:$PATH
-ENV BUILD_ENV='PROD'
+# Set to 0 for development, any other value for production
+ENV IS_PROD=0
 ENV VAULT_ADDR='http://127.0.0.1:8200'
 ENV VAULT_API_ADDR='http://127.0.0.1:8200'
 ENV VAULT_TOKEN='~!root@token!~'
 ENV VAULT_VERSION=1.15.3
 ENV VAULT_DEV_LISTENER="tcp://0.0.0.0:8200"
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y && apt update && apt install -y jq\
     wget \
     tar \
     unzip \
@@ -36,8 +38,4 @@ EXPOSE 8200 8201
 
 RUN chmod +x /app/config/*.sh
 
-
 CMD ["/app/config/install.sh"]
-#CMD ["/app/config/token.sh"]
-#CMD ["./vaultInitializer"]
-

@@ -1,19 +1,26 @@
 #!/bin/bash
 
+env="$IS_PROD"
 echo "start build shell."
 
-if [ -z "$BUILD_ENV" ]; then
+if [ -z "$env" ]; then
   echo "BUILD_ENV is not set!"
   exit 1
 else
-  echo " BUILD_ENV is set to: $BUILD_ENV"
+  echo " BUILD_ENV is set to: $env"
 fi
 
-if [ "$BUILD_ENV" = "PROD" ]; then
-    vault server -config=/app/config/prod-config.hcl
+if [ "$env" = "0" ]; then
+    vault server  -config=/app/config/dev-config.hcl &
   else
-    vault server  -config=/app/config/dev-config.hcl
+    vault server -config=/app/config/prod-config.hcl &
+    echo "start token, please wait"
+    sh /app/config/token.sh
+    echo "token done"
 fi
 
-./token.sh
+
+
+echo "start vaultInitializer"
 /app/vaultInitializer
+echo "vaultInitializer done"
